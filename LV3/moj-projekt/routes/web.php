@@ -19,9 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profil', [ProfileController::class, 'show'])->name('profil.show');
     
     // Spremanje novog projekta
+    Route::get('/projekti', [ProfileController::class, 'show'])->name('projekti.index');
     Route::post('/projekti', [ProjectController::class, 'store'])->name('projekti.store');
     Route::get('/projekti/create', [ProjectController::class, 'create'])->name('projekti.create');
-     Route::get('/projekti/{project}/edit', [ProjectController::class, 'edit'])->name('projekti.edit');
+    Route::get('/projekti/{project}/edit', [ProjectController::class, 'edit'])->name('projekti.edit');
     Route::put('/projekti/{project}', [ProjectController::class, 'update'])->name('projekti.update');
     Route::delete('/projekti/{project}', [ProjectController::class, 'destroy'])->name('projekti.destroy');
 });

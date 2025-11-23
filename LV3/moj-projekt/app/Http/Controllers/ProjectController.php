@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ProjectController extends Controller
 {
+    use AuthorizesRequests;
     // Prikaz forme za kreiranje novog projekta
     public function create()
     {
@@ -55,7 +57,7 @@ class ProjectController extends Controller
         $this->authorize('update', $project);
         $users = User::where('id', '!=', auth()->id())->get();
 
-        return view('projekti.edit', compact('project'));
+        return view('projekti.edit', compact('project', 'users'));
     }
 
     public function update(Request $request, Project $project)
