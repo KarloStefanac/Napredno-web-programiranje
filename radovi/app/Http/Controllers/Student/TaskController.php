@@ -16,4 +16,18 @@ class TaskController extends Controller
 
         return view('student.tasks.index', compact('tasks'));
     }
+
+    public function apply(Task $task)
+    {
+        $user = auth()->user();
+
+        if ($task->applicants()->where('student_id', $user->id)->exists()) {
+            return back()->with('error', 'Već ste prijavljeni na ovaj rad.');
+        }
+
+        $task->applicants()->attach($user->id);
+
+        return back()->with('success', 'Uspješno ste se prijavili na rad.');
+    }
+
 }

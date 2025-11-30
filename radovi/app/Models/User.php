@@ -61,4 +61,10 @@ class User extends Authenticatable
     {
         return $this->role === 'student';
     }
+    public function appliedTasks()
+    {
+        return $this->belongsToMany(Task::class, 'student_task', 'student_id', 'task_id')
+                    ->withPivot('accepted')
+                    ->withTimestamps();
+    }
 }

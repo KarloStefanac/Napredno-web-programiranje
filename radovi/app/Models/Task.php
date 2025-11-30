@@ -21,4 +21,11 @@ class Task extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function applicants()
+    {
+        return $this->belongsToMany(User::class, 'student_task', 'task_id', 'student_id')
+                    ->withPivot('accepted')
+                    ->withTimestamps();
+    }
 }

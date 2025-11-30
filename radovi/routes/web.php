@@ -30,5 +30,14 @@ Route::middleware(['auth', 'is_student'])->prefix('student')->name('student.')->
     Route::get('tasks', [StudentTaskController::class, 'index'])->name('tasks.index');
 });
 
+Route::middleware(['auth', 'is_student'])->prefix('student')->name('student.')->group(function() {
+    Route::post('tasks/{task}/apply', [StudentTaskController::class, 'apply'])->name('tasks.apply');
+});
+
+Route::middleware(['auth', 'is_nastavnik'])->prefix('teacher')->name('teacher.')->group(function() {
+    Route::get('tasks/{task}/applicants', [TeacherTaskController::class, 'applicants'])->name('tasks.applicants');
+    Route::post('tasks/{task}/accept/{student}', [TeacherTaskController::class, 'accept'])->name('tasks.accept');
+});
+
 
 require __DIR__.'/auth.php';
