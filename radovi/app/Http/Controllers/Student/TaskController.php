@@ -11,23 +11,26 @@ class TaskController extends Controller
 
     public function index()
     {
-        // Dohvati sve radove
-        $tasks = Task::with('teacher')->orderBy('created_at', 'desc')->paginate(20);
+        // Student vidi sve radove na koje se još može prijaviti
+        $tasks = Task::whereDoesntHave('applicants', function($q) {
+            $q->where('user_id', auth()->id());
+        })->get();
 
         return view('student.tasks.index', compact('tasks'));
     }
 
     public function apply(Task $task)
     {
-        $user = auth()->user();
+        $userId = auth()->id();
 
-        if ($task->applicants()->where('student_id', $user->id)->exists()) {
-            return back()->with('error', 'Već ste prijavljeni na ovaj rad.');
+        if ($task->applicants()->where('student_id', $userId)->exists()) {
+            return redirect()->route('student.tasks.index')->with('error', 'Greska pri prijavi.');
+            // return back()->with('error', __('student.tasks.index'));
         }
 
-        $task->applicants()->attach($user->id);
-
-        return back()->with('success', 'Uspješno ste se prijavili na rad.');
+        $task->applicants()->attach($userId);
+        return redirect()->route('student.tasks.index')->with('success', 'Prijavljen na task.');
+        // return back()->with('success', __('student.tasks.index'));
     }
 
 }

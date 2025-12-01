@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Uredi ulogu: {{ $user->name }}</h1>
+    <h1 class="text-white">Uredi ulogu: {{ $user->name }}</h1>
 
     @if($errors->any())
         <div class="alert alert-danger">
@@ -15,7 +15,7 @@
         @method('PUT')
 
         <div class="mb-3">
-            <label for="role" class="form-label">Uloga</label>
+            <label for="role" class="form-label text-white">Uloga</label>
             <select name="role" id="role" class="form-control">
                 @foreach($roles as $key => $label)
                     <option value="{{ $key }}" @if($user->role === $key) selected @endif>{{ $label }}</option>
@@ -23,8 +23,8 @@
             </select>
         </div>
 
-        <button class="btn btn-success">Spremi</button>
-        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Natrag</a>
+        <button class="btn btn-success text-white">Spremi</button>
+        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary text-white">Natrag</a>
     </form>
 </div>
 @endsection

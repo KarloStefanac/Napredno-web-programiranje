@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 text-gray-200" />
                     </a>
                 </div>
 
@@ -15,6 +15,40 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @if(auth()->user()->role === 'admin')
+                        <a href="{{ route('admin.users.index') }}" 
+                           class="text-white-700 dark:text-gray-200 hover:text-blue-600">
+                            Pregled usera
+                        </a>
+                    @endif
+
+                    @if(auth()->user()->role === 'student')
+                        <a href="{{ route('student.tasks.index') }}" 
+                           class="text-gray-700 dark:text-gray-200 hover:text-blue-600">
+                            Pregled radova
+                        </a>
+
+                        {{-- <a href="{{ route('student.applications') }}" 
+                           class="text-gray-700 dark:text-gray-200 hover:text-blue-600">
+                            Moje prijave
+                        </a> --}}
+                    @endif
+
+                    @if(auth()->user()->role === 'nastavnik')
+                        <a href="{{ route('teacher.tasks.create') }}" 
+                           class="text-gray-700 dark:text-gray-200 hover:text-blue-600">
+                            Stvori rad
+                        </a>
+
+                        <a href="{{ route('teacher.tasks.index') }}" 
+                           class="text-gray-700 dark:text-gray-200 hover:text-blue-600">
+                            Prikaz radova
+                        </a>
+                    @endif
+                        {{-- language switcher --}}
+                        <a href="{{ route('locale.switch', 'hr') }}" class="text-sm">HR</a>
+                        <a href="{{ route('locale.switch', 'en') }}" class="text-sm">EN</a>
                 </div>
             </div>
 
@@ -37,6 +71,7 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">

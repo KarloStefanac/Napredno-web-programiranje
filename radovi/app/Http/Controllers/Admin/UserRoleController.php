@@ -11,10 +11,10 @@ class UserRoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function __construct()
-    {
-        $this->middleware(['auth', 'is_admin']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware(['auth', 'is_admin']);
+    // }
     public function index()
     {
         $users = User::orderBy('name')->paginate(20);
@@ -48,27 +48,27 @@ class UserRoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        $roles = ['admin' => 'admin', 'nastavnik' => 'nastavnik', 'student' => 'student'];
+        $roles = ['admin' => 'Admin', 'nastavnik' => 'Nastavnik', 'student' => 'Student'];
         return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
         $request->validate([
             'role' => 'required|in:admin,nastavnik,student',
         ]);
 
-        // Onemogući demoting last admin (opcionalno) — preporuka
+        // zaštite
         if ($user->id === auth()->id() && $request->role !== 'admin') {
             return back()->withErrors(['role' => 'Ne možete sebi oduzeti admin privilegije.']);
         }
 
-        // Optional: spriječi da nema nijednog admina
+        // spriječi uklanjanje posljednjeg admina
         if ($user->role === 'admin' && $request->role !== 'admin') {
             $adminCount = User::where('role', 'admin')->count();
             if ($adminCount <= 1) {

@@ -8,7 +8,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table class="table">
+    <table class="table text-white">
         <thead>
             <tr><th>Ime</th><th>Email</th><th>Uloga</th><th>Akcija</th></tr>
         </thead>
