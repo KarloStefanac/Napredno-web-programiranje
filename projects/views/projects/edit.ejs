@@ -1,0 +1,68 @@
+<%- include('../partials/header') %>
+
+    <h1>Uredi Projekt</h1>
+
+    <form action="/projects/<%= project._id %>" method="POST">
+        <div class="mb-3">
+            <label for="naziv" class="form-label">Naziv</label>
+            <input type="text" class="form-control" id="naziv" name="naziv" value="<%= project.naziv %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="opis" class="form-label">Opis</label>
+            <textarea class="form-control" id="opis" name="opis" required><%= project.opis %></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="cijena" class="form-label">Cijena</label>
+            <input type="number" class="form-control" id="cijena" name="cijena" value="<%= project.cijena %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="obavljeni_poslovi" class="form-label">Obavljeni poslovi</label>
+            <textarea class="form-control" id="obavljeni_poslovi"
+                name="obavljeni_poslovi"><%= project.obavljeni_poslovi %></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="datum_pocetka" class="form-label">Datum početka</label>
+            <input type="date" class="form-control" id="datum_pocetka" name="datum_pocetka"
+                value="<%= project.datum_pocetka ? new Date(project.datum_pocetka).toISOString().split('T')[0] : '' %>"
+                required>
+        </div>
+        <div class="mb-3">
+            <label for="datum_zavrsetka" class="form-label">Datum završetka</label>
+            <input type="date" class="form-control" id="datum_zavrsetka" name="datum_zavrsetka"
+                value="<%= project.datum_zavrsetka ? new Date(project.datum_zavrsetka).toISOString().split('T')[0] : '' %>">
+        </div>
+        <button type="submit" class="btn btn-primary">Spremi Promjene</button>
+        <a href="/projects" class="btn btn-secondary">Odustani</a>
+    </form>
+
+    <hr class="my-5">
+
+    <h2>Članovi Tima</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="list-group mb-3">
+                <% if (project.clanovi && project.clanovi.length> 0) { %>
+                    <% project.clanovi.forEach(function(clan) { %>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <%= clan %>
+                                <form action="/projects/<%= project._id %>/members/delete" method="POST"
+                                    style="display:inline;">
+                                    <input type="hidden" name="member_name" value="<%= clan %>">
+                                    <button type="submit" class="btn btn-sm btn-danger">X</button>
+                                </form>
+                        </li>
+                        <% }); %>
+                            <% } else { %>
+                                <li class="list-group-item">Nema članova.</li>
+                                <% } %>
+            </ul>
+
+            <form action="/projects/<%= project._id %>/members" method="POST" class="d-flex">
+                <input type="text" class="form-control me-2" name="member_name" placeholder="Ime člana" required>
+                <button type="submit" class="btn btn-success">Dodaj</button>
+            </form>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>
